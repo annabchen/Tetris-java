@@ -39,11 +39,22 @@ public class L implements Piece{
 
     @Override
     public void moveLeft() {
+        for(Point p: getBlocks()) {
+            if(p.x==0){
+                return;
+            }
+        }
         point.x -= 1;
+
     }
 
     @Override
     public void moveRight() {
+        for(Point p: getBlocks()) {
+            if(p.x==9){
+                return;
+            }
+        }
         point.x+=1;
     }
 
@@ -54,6 +65,6 @@ public class L implements Piece{
 
     @Override
     public int colorId() {
-        return 0;
+        return 2;
     }
 }

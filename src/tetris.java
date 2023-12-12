@@ -26,7 +26,7 @@ public class tetris {
         StdDraw.enableDoubleBuffering();
         StdDraw.setCanvasSize(500, 1000);
         StdDraw.setScale(0,1000);
-        StdDraw.setPenColor(StdDraw.BLUE);
+        //StdDraw.setPenColor(StdDraw.BLUE);
     }
     // methods for drawing the different blocks:
     public static void Lblock(int[][] window, int r, int c){
@@ -110,7 +110,7 @@ public class tetris {
     public static void drawRows(int[][] window){
         int cellSizeX = 500 / 10 ;
         int cellSizeY = cellSizeX * 2;
-        StdDraw.setPenColor(StdDraw.BLUE);
+        //StdDraw.setPenColor(StdDraw.BLUE);
         for (int r = 0; r < window.length; r++) {
             for (int c = 0; c < window[r].length; c++) {
                 if(window[r][c] == 1){

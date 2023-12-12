@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -55,7 +56,7 @@ public class Window {
     public boolean downSpace(){
         int[][] positions = positions(false);
         for(Point pt: activePiece.getBlocks()){
-            System.out.println(pt.y);
+            //System.out.println(pt.y);
             if( pt.y>HEIGHT-2 || positions[pt.y+1][pt.x]==1){
                 return false;
             }
@@ -85,12 +86,11 @@ public class Window {
         // if enough time passed, we move down the active piece if there is room
         // if active piece is at the bottom, solidify it
         if(System.nanoTime()-moveDownTimestamp>1e9){
-            System.out.println(downSpace());
+            //System.out.println(downSpace());
             if(downSpace()) {
                 activePiece.moveDown();
             }
             else {
-                // if row is full, delete
                 solidify(activePiece);
                 activePiece = null;
             }
@@ -98,8 +98,7 @@ public class Window {
         }
     }
     public Piece getRandomPiece(){
-        return new T(5,1);
-        /*int n = (int)(Math.random()*7);
+        int n = (int)(Math.random()*7);
         if (n==0){
             return new L(5,1);
         }
@@ -120,29 +119,51 @@ public class Window {
         }
         else {
             return new S(5,1);
-        }*/
-    }
-    // returns the rows deleted
-    public int solidify(Piece p){
-        for(Point pt : p.getBlocks()){
-            window[pt.y][pt.x]=1;
         }
+    }
+    // solidifies pieces, deletes full rows (no 0s), returns the num rows deleted
+    public int solidify(Piece p) {
+        // Solidify the piece on the board
+        for (Point pt : p.getBlocks()) {
+            window[pt.y][pt.x] = activePiece.colorId();
+        }
+        boolean[] rowsToDelete = new boolean[20];
         int deletedRows = 0;
-        for (int i = 19; i >= 0; i--) {
-            boolean seen0 = false;
+        // Identify full rows
+        for (int i = 0; i < 20; i++) {
+            boolean fullRow = true;
             for (int j = 0; j < 10; j++) {
-                if (window[i][j] == 0){
-                    seen0 = true;
+                if (window[i][j] == 0) {
+                    fullRow = false;
+                    break;
                 }
             }
-            if(!seen0){
+            if (fullRow) {
+                rowsToDelete[i] = true;
                 deletedRows++;
             }
-            window[i] = window[i-deletedRows];
-            if(i<deletedRows){
+        }
+        // Shift rows down
+        if (deletedRows > 0) {
+            int newRow = 19;
+            for (int oldRow = 19; oldRow >= 0; oldRow--) {
+                if (!rowsToDelete[oldRow]) {
+                    if (newRow != oldRow) {
+                        window[newRow] = Arrays.copyOf(window[oldRow], 10);
+                    }
+                    newRow--;
+                }
+            }
+            // Clear the top rows
+            for (int i = 0; i <= newRow; i++) {
                 window[i] = new int[10];
             }
         }
         return deletedRows;
+    }
+    public int scoreKeep(){
+        int score = 0;
+        score += solidify(activePiece)*100;
+        return score;
     }
 }

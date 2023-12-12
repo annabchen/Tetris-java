@@ -6,10 +6,10 @@ public class Project {
     public static void main(String[] args) {
         Window win1 = new Window();
         Display display = new Display();
-
-
+        //display.openScreen();
          //while game is running,
         while(!win1.gameOver()) {
+            display.frame();
              //check if user moved the piece left or right
             if (StdDraw.isKeyPressed(VK_LEFT)){
                 // move key left
@@ -27,6 +27,7 @@ public class Project {
             display.render(win1.positions());
             StdDraw.pause(100);
         }
+        //display.endingScreen();
     }
     public static void printArr (int[][] arr){
         System.out.println(Arrays.deepToString(arr));

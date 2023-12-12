@@ -29,11 +29,22 @@ public class I implements Piece{
 
     @Override
     public void moveLeft() {
+        for(Point p: getBlocks()) {
+            if(p.x==0){
+                return;
+            }
+        }
         point.x -= 1;
+
     }
 
     @Override
     public void moveRight() {
+        for(Point p: getBlocks()) {
+            if(p.x==9){
+                return;
+            }
+        }
         point.x+=1;
     }
 

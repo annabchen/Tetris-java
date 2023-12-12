@@ -48,6 +48,11 @@ public class T implements Piece{
 
     @Override
     public void moveRight() {
+        for(Point p: getBlocks()) {
+            if(p.x==9){
+                return;
+            }
+        }
         point.x+=1;
     }
 
@@ -58,6 +63,6 @@ public class T implements Piece{
 
     @Override
     public int colorId() {
-        return 2;
+        return 5;
     }
 }

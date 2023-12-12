@@ -17,7 +17,7 @@ public class J implements Piece{
                     , new Point(point.x + 1, point.y)};
         }
         else if (numRotations%4==1){
-            return new Point[]{new Point(point.x, point.y), new Point(point.x, point.y+1), new Point(point.x, point.y + 2)
+            return new Point[]{new Point(point.x, point.y), new Point(point.x, point.y+1), new Point(point.x, point.y -1)
                     , new Point(point.x + 1, point.y+1)};
         }
         else if (numRotations%4==2){
@@ -37,11 +37,22 @@ public class J implements Piece{
 
     @Override
     public void moveLeft() {
+        for(Point p: getBlocks()) {
+            if(p.x==0){
+                return;
+            }
+        }
         point.x -= 1;
+
     }
 
     @Override
     public void moveRight() {
+        for(Point p: getBlocks()) {
+            if(p.x==9){
+                return;
+            }
+        }
         point.x+=1;
     }
 
@@ -52,6 +63,6 @@ public class J implements Piece{
 
     @Override
     public int colorId() {
-        return 0;
+        return 1;
     }
 }
