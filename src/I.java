@@ -1,8 +1,12 @@
 public class I implements Piece{
     private Point point;
     private int numRotations;
+    private int[] xs;
+    private int[] ys;
     public I(int x, int y){
         this.point = new Point(x,y);
+        xs = new int[]{0,0,0,0};
+        ys = new int[]{0,1,2,3};
     }
     @Override
     public Point position() {
@@ -55,6 +59,16 @@ public class I implements Piece{
 
     @Override
     public int colorId() {
-        return 0;
+        return 7;
+    }
+
+    @Override
+    public int[] getXs() {
+        return xs;
+    }
+
+    @Override
+    public int[] getYs() {
+        return ys;
     }
 }

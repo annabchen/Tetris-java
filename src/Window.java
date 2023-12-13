@@ -9,22 +9,27 @@ public class Window {
     // have method that constructs a boolean 2d array of which pieces are occupied
     // int[][] color by number?!!
     private int[][] window;
+    private int[][] npiece;
     public static final int WIDTH = 10;
     public static final int HEIGHT = 20;
     private ArrayList<Piece> pieces;
     private Piece activePiece;
+    private Piece nextPiece;
     private long moveDownTimestamp;
+    private int score = 0;
     public Window(){
         window = new int[20][10];
+        npiece = new int[4][4];
         pieces = new ArrayList<>();
         moveDownTimestamp = System.nanoTime();
         activePiece = getRandomPiece();
+        nextPiece = getRandomPiece();
     }
     public boolean gameOver(){
         // game is over when active piece cannot move down anymore but is still out of bounds
         if (activePiece!= null && !downSpace()){
             for(Point pt : activePiece.getBlocks()){
-                if(pt.y<0){
+                if(pt.y==1){
                     return true;
                 }
             }
@@ -32,13 +37,6 @@ public class Window {
         return false;
     }
     public int[][] positions(boolean hasActivePiece){
-        /*int[][] ints = new int[20][10];
-        for(Piece p : pieces){
-            for(Point pt : p.getBlocks()){
-                ints[pt.y][pt.x]=1;
-            }
-        }
-        return ints;*/
         int[][] newWindow = new int[window.length][];
         for (int i = 0; i < window.length; i++) {
             newWindow[i] = Arrays.copyOf(window[i], window[i].length);
@@ -57,7 +55,7 @@ public class Window {
         int[][] positions = positions(false);
         for(Point pt: activePiece.getBlocks()){
             //System.out.println(pt.y);
-            if( pt.y>HEIGHT-2 || positions[pt.y+1][pt.x]==1){
+            if( pt.y>HEIGHT-2 || positions[pt.y+1][pt.x]!=0){
                 return false;
             }
         }
@@ -78,10 +76,19 @@ public class Window {
             activePiece.rotate();
         }
     }
+    public int[][] initializeNPiece(){
+        npiece = new int[4][4];
+        for (int i=0; i<npiece.length;i++) {
+            npiece[nextPiece.getYs()[i]][nextPiece.getXs()[i]] = nextPiece.colorId();
+        }
+        return npiece;
+    }
     public void tick(){
         // if no active piece, it puts a new one at the top
         if (activePiece==null){
-            activePiece = getRandomPiece();
+            activePiece = nextPiece;
+            nextPiece = getRandomPiece();
+
         }
         // if enough time passed, we move down the active piece if there is room
         // if active piece is at the bottom, solidify it
@@ -123,6 +130,7 @@ public class Window {
     }
     // solidifies pieces, deletes full rows (no 0s), returns the num rows deleted
     public int solidify(Piece p) {
+        StdAudio.play("SFX_8_1_.wav");
         // Solidify the piece on the board
         for (Point pt : p.getBlocks()) {
             window[pt.y][pt.x] = activePiece.colorId();
@@ -141,10 +149,12 @@ public class Window {
             if (fullRow) {
                 rowsToDelete[i] = true;
                 deletedRows++;
+                score += 100;
             }
         }
         // Shift rows down
         if (deletedRows > 0) {
+            StdAudio.play("tetrisRowsCleared.wav");
             int newRow = 19;
             for (int oldRow = 19; oldRow >= 0; oldRow--) {
                 if (!rowsToDelete[oldRow]) {
@@ -161,9 +171,8 @@ public class Window {
         }
         return deletedRows;
     }
-    public int scoreKeep(){
-        int score = 0;
-        score += solidify(activePiece)*100;
+    public int getScore(){
         return score;
     }
+
 }

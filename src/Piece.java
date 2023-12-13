@@ -1,6 +1,7 @@
 import java.util.List;
 
 public interface Piece {
+
     public Point position();
     public Point[] getBlocks();
     public void rotate();
@@ -8,5 +9,7 @@ public interface Piece {
     public void moveRight();
     public void moveDown();
     public int colorId();
+    public int[] getXs();
+    public int[] getYs();
 
 }

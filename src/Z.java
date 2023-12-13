@@ -1,9 +1,14 @@
 public class Z implements Piece{
     private Point point;
     private int numRotations;
+    private int[] xs;
+    private int[] ys;
     public Z(int x, int y){
         this.point = new Point(x,y);
+        xs = new int[]{0,1,1,2};
+        ys = new int[]{0,0,1,1};
     }
+
     @Override
     public Point position() {
         return point;
@@ -64,5 +69,13 @@ public class Z implements Piece{
     @Override
     public int colorId() {
         return 6;
+    }
+    public int[] getXs() {
+        return xs;
+    }
+
+    @Override
+    public int[] getYs() {
+        return ys;
     }
 }

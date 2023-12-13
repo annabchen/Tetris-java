@@ -3,8 +3,12 @@ import java.util.List;
 public class L implements Piece{
     private Point point;
     private int numRotations;
+    private int[] xs;
+    private int[] ys;
     public L(int x, int y){
         this.point = new Point(x,y);
+        xs = new int[]{0,0,0,1};
+        ys = new int[]{0,1,2,2};
     }
     @Override
     public Point position() {
@@ -66,5 +70,13 @@ public class L implements Piece{
     @Override
     public int colorId() {
         return 2;
+    }
+    public int[] getXs() {
+        return xs;
+    }
+
+    @Override
+    public int[] getYs() {
+        return ys;
     }
 }
